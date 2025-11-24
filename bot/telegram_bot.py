@@ -359,12 +359,23 @@ class ArbitrageBot:
                 
                 # Get all tokens with non-zero balance
                 tokens_with_balance = []
+                
                 for currency, amounts in balance.items():
-                    if currency in ['free', 'used', 'total', 'info']:
-                        continue  # Skip summary fields
+                    if currency in ['free', 'used', 'total', 'info', 'timestamp', 'datetime']:
+                        continue  # Skip summary and timestamp fields
                     
-                    total_amt = amounts.get('total', 0) or 0
-                    free_amt = amounts.get('free', 0) or 0
+                    # Amounts MUST be a dict. If not → skip and log
+                    if not isinstance(amounts, dict):
+                        logger.warning(f"Unexpected format for {exchange_name} {currency}: {type(amounts)} = {amounts}")
+                        text += f"  ⚠️ Unexpected format for {currency}: {amounts}\n"
+                        continue
+                    
+                    try:
+                        total_amt = float(amounts.get('total', 0) or 0)
+                        free_amt = float(amounts.get('free', 0) or 0)
+                    except (TypeError, ValueError):
+                        logger.warning(f"Could not convert balance for {currency}: {amounts}")
+                        continue
                     
                     if total_amt > 0:
                         tokens_with_balance.append({

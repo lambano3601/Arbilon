@@ -91,11 +91,24 @@ class ExchangeManager:
         return self.exchanges.get(exchange_name)
     
     async def fetch_balance(self, exchange_name: str) -> dict:
-        """Fetch balance from exchange."""
-        exchange = self.get_exchange(exchange_name)
-        if not exchange:
-            raise ValueError(f"Exchange {exchange_name} not initialized")
-        return await exchange.fetch_balance()
+        """Fetch balance from exchange. Always returns a dict, never None."""
+        try:
+            exchange = self.get_exchange(exchange_name)
+            if not exchange:
+                raise ValueError(f"Exchange {exchange_name} not initialized")
+            
+            balance = await exchange.fetch_balance()
+            
+            # Ensure balance is always a dict, never None or other types
+            if not isinstance(balance, dict):
+                logger.warning(f"Invalid balance type for {exchange_name}: {type(balance)}")
+                return {}
+            
+            return balance
+        
+        except Exception as e:
+            logger.error(f"Balance fetch error for {exchange_name}: {e}")
+            return {}
     
     async def fetch_ticker(self, exchange_name: str, symbol: str) -> dict:
         """Fetch ticker for symbol."""
