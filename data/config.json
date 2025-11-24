@@ -1,0 +1,42 @@
+{
+  "trading_config": {
+    "trade_amount_usdt": 10.0,
+    "enabled": false,
+    "auto_execute": false,
+    "require_manual_approval": true,
+    "monitoring_interval_seconds": 5
+  },
+  "trading_pairs": [
+    {
+      "pair": "BTC/USDT",
+      "enabled": true,
+      "exchanges": [
+        "kucoin",
+        "bybit"
+      ]
+    },
+    {
+      "pair": "ETH/USDT",
+      "enabled": true,
+      "exchanges": [
+        "kucoin",
+        "bybit"
+      ]
+    },
+    {
+      "pair": "SOL/USDT",
+      "enabled": true,
+      "exchanges": [
+        "kucoin",
+        "bybit"
+      ]
+    }
+  ],
+  "risk_limits": {
+    "min_spread_percent_gross": 0.5,
+    "min_profit_usd": 5.0,
+    "max_position_size_usd": 500.0,
+    "max_inventory_drift_percent": 15.0,
+    "slippage_buffer_percent": 0.2
+  }
+}

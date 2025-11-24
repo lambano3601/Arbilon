@@ -1,0 +1,6 @@
+python-telegram-bot==20.7
+ccxt>=4.0.0
+cryptography>=41.0.0
+python-dotenv>=1.0.0
+aiofiles>=23.0.0
+
